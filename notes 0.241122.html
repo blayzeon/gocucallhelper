@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Call Helper</title>
+    <style>
+      :root {
+        --primary-bgc: #005da6;
+        --secondary-bgc: #7ac144;
+        --bgc-hover: rgb(235, 235, 235);
+      }
+
+      * {
+        box-sizing: border-box;
+        padding: 0;
+        margin: 0;
+        font-family: monospace, monospace;
+      }
+
+      html,
+      body {
+        font-family: monospace, monospace;
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+
+      form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        color: white;
+        text-align: center;
+        opacity: 0.5;
+      }
+
+      footer a {
+        color: white;
+      }
+
+      button {
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      button.selected {
+        background-color: var(--primary-bgc);
+        color: white;
+      }
+
+      button:hover {
+        color: white;
+        background-color: var(--secondary-bgc);
+      }
+
+      #container {
+        min-height: 250px;
+        height: 100%;
+        width: 100%;
+      }
+
+      #call-helper {
+        min-height: 80%;
+		min-width: 585px;
+        width: 80%;
+        background-color: white;
+        padding: 5px;
+      }
+
+      #call-tabs {
+        border: 1px solid rgb(157, 157, 157);
+        margin: 0px 15px;
+      }
+
+      #call-info {
+        border: 1px solid rgb(157, 157, 157);
+        flex: 1;
+      }
+
+      #form-notes {
+        flex: 1;
+        resize: none;
+        overflow: scroll;
+      }
+
+      .primary {
+        background-color: var(--primary-bgc);
+        color: white;
+      }
+
+      .secondary {
+        background-color: var(--secondary-bgc);
+        color: white;
+      }
+
+      .default {
+        background-color: white;
+        color: black;
+      }
+
+      .round-border {
+        border-radius: 10px;
+      }
+
+      .margin {
+        margin: 8px 15px;
+      }
+
+      .padded {
+        padding: 10px;
+      }
+
+      .flex-center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+
+      .flex-column {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .flex-gap {
+        display: flex;
+        gap: 10px;
+      }
+
+      .display-none {
+        display: none !important;
+      }
+
+      .input-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        text-align: left;
+      }
+
+      .input-container:hover {
+        background-color: var(--bgc-hover);
+      }
+
+      .input-container > label {
+        cursor: pointer;
+        width: 160px;
+        align-self: center;
+      }
+
+      .input-container > select {
+        flex: 1;
+        cursor: pointer;
+        padding: 5px 10px;
+      }
+
+      .inactive {
+        display: none !important;
+      }
+
+      .link-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+      }
+      .link-list > li {
+        padding: 5px 0px;
+      }
+
+      .link-list a:hover {
+        color: white;
+      }
+
+      .link-list li:hover {
+        background-color: var(--secondary-bgc);
+      }
+
+      input:invalid,
+      select:invalid {
+        outline: 1px solid red;
+      }
+
+      @media only screen and (max-height: 450px) {
+        footer {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="container" class="flex-center flex-column primary">
+      <div id="call-helper" class="flex-column round-border">
+        <div id="call-banner" class="margin padded round-border secondary">
+          <h1>Call Helper</h1>
+        </div>
+        <div id="call-tabs">
+          <button data-tab-button="call-quality" class="selected">
+            Quality
+          </button>
+          <button data-tab-button="call-tools">Tools</button>
+          <button data-tab-button="call-guides">Guides</button>
+          <button data-tab-button="call-links">Links</button>
+          <button id="form-reset">Reset</button>
+        </div>
+        <div id="call-info" class="default margin padded">
+          <form id="form-elm" data-tab-content="call-quality"></form>
+          <div
+            data-tab-content="call-tools"
+            id="call-tools"
+            class="display-none"
+          ></div>
+          <div
+            data-tab-content="call-guides"
+            id="call-guides"
+            class="display-none"
+          ></div>
+          <div
+            data-tab-content="call-links"
+            id="call-links"
+            class="display-none"
+          ></div>
+        </div>
+      </div>
+      <footer>
+        <p>version 0.241122</p>
+        <p>
+          any feedback can be sent to
+          <a href="mailto:kecarter@georgiasown.org">kecarter@georgiasown.org</a>
+        </p>
+      </footer>
+    </div>
+
+    <script>
+      // form & reset
+      const form = document.getElementById("form-elm");
+      const reset = document.getElementById("form-reset");
+      reset.addEventListener("click", () => {
+        const a = confirm("Are you sure you want to reset the form?");
+        if (!a) return;
+
+        // reset form button colors
+        setCurrentTab("call-quality");
+		const notAuthFields = document.getElementById("form-not-auth").classList.add("inactive");
+		const fullFields = document.getElementById("form-full-verification").classList.add("inactive");
+
+        form.reset();
+      });
+
+      // tabs
+      function setCurrentTab(tab) {
+        // turn off tabs
+        const tab_buttons = document.querySelectorAll("[data-tab-button]");
+        tab_buttons.forEach((button) => {
+          button.classList.remove("selected");
+        });
+
+        // turn off content
+        const content = document.querySelectorAll(`[data-tab-content]`);
+        content.forEach((tab_content) => {
+          tab_content.classList.add("display-none");
+        });
+
+        // set tab & content
+        const current_button = document.querySelector(
+          `[data-tab-button="${tab}"]`
+        );
+        current_button.classList.add("selected");
+
+        const current_content = document.querySelector(
+          `[data-tab-content="${tab}"]`
+        );
+        current_content.classList.remove("display-none");
+      }
+
+      const tab_buttons = document.querySelectorAll("[data-tab-button]");
+      tab_buttons.forEach((button) => {
+        button.addEventListener("click", () => {
+          setCurrentTab(button.dataset.tabButton);
+        });
+      });
+
+      // content
+      function returnLinkList(array) {
+        const container = document.createElement("ul");
+        container.classList.add("link-list");
+
+        for (let i = 0; i < array.length; i += 1) {
+          const li = document.createElement("li");
+          const link = document.createElement("a");
+          link.href = array[i].href;
+          link.innerText = array[i].label;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          li.appendChild(link);
+          container.appendChild(li);
+        }
+
+        return container;
+      }
+
+      const tools = document.getElementById("call-tools");
+      const links = document.getElementById("call-links");
+      const guides = document.getElementById("call-guides");
+
+      const toolsArray = [
+        {
+          label: "Quiq Verification",
+          href: "https://url.us.m.mimecastprotect.com/s/3q0nC5y1QoIMrkX6sOhxHkQBlC?domain=georgiasown.goquiq.com",
+        },
+        {
+          label: "Client Central",
+          href: "https://www.client-central.com/",
+        },
+        {
+          label: "Online Banking Admin",
+          href: "https://url.us.m.mimecastprotect.com/s/ZHwNC73W1qTzBG8ZSNsJHoeKv5?domain=online-admin.georgiasown.org",
+        },
+        {
+          label: "DocuSign",
+          href: "https://url.us.m.mimecastprotect.com/s/Zj2rC82B1riXyN2YSotyHyWpt6?domain=account.docusign.com",
+        },
+		{
+          label: "SWBC",
+          href: "https://portal.swbc.com/identity/Home/Login",
+        },
+		{
+          label: "Nautilus",
+          href: "https://records.georgiasown.org/",
+        },
+      ];
+
+      const guidesArray = [
+        {
+          label: "DNA Navigation",
+          href: "https://url.us.m.mimecastprotect.com/s/iRQAC9rL1vCzw4l2S1u6HqG5bK?domain=thehub.georgiasown.org",
+        },
+        {
+          label: "Interaction Desktop",
+          href: "https://url.us.m.mimecastprotect.com/s/HnIaC0RXYjSkAN7msLCmH9v4lE?domain=thehub.georgiasown.org",
+        },
+        {
+          label: "Member Verification",
+          href: "https://url.us.m.mimecastprotect.com/s/3byRCgJQZWtqzEoGcKFgH4Lc00?domain=thehub.georgiasown.org",
+        },
+        {
+          label: "Stop Payment Job Aid",
+          href: "https://url.us.m.mimecastprotect.com/s/Q5ARCjROZWSYxoBRcMH7Hm11JW?domain=thehub.georgiasown.org",
+        },
+        {
+          label: "Fraud Job Aid",
+          href: "https://url.us.m.mimecastprotect.com/s/EuHFCkRO8WSkJ2K5sDI8HG8Le8?domain=thehub.georgiasown.org",
+        },
+        {
+          label: "Credit Card Job Aid",
+          href: "https://url.us.m.mimecastprotect.com/s/X2n3ClYMxWi1YRVXsLSNHzGsvK?domain=thehub.georgiasown.org",
+        },
+        {
+          label: "Loan Payment Job Aid",
+          href: "https://url.us.m.mimecastprotect.com/s/cEuDCmZMOWipQygWTVTRHRT1DF?domain=thehub.georgiasown.org",
+        },
+      ];
+
+      const linksArray = [
+        {
+          label: "The Hub",
+          href: "https://url.us.m.mimecastprotect.com/s/76uUCn5NxWiXR9PmS4UWHJBRaU?domain=thehub.georgiasown.org",
+        },
+        {
+          label: "Member Services Forms",
+          href: "https://url.us.m.mimecastprotect.com/s/eTEDCo26VWiDy2gvuJcOHpExiS?domain=thehub.georgiasown.org",
+        },
+        {
+          label: "Documents & Forms",
+          href: "https://url.us.m.mimecastprotect.com/s/iR3HCpYX8Wi9R4VAFqfEHGTvdq?domain=thehub.georgiasown.org",
+        },
+        {
+          label: "Workday",
+          href: "https://url.us.m.mimecastprotect.com/s/XRjiCqxM7Wf1MYEXs7hxHEyduE?domain=georgiasown.workday.com",
+        },
+        {
+          label: "Georgia's Own Website",
+          href: "https://url.us.m.mimecastprotect.com/s/RgOMCrkM8WhrBQk2IYirH4Wb4B?domain=georgiasown.org",
+        },
+      ];
+      tools.appendChild(returnLinkList(toolsArray));
+      guides.appendChild(returnLinkList(guidesArray));
+      links.appendChild(returnLinkList(linksArray));
+
+      // form
+      const outOfWalletQuestions = [
+        "",
+        "E-Mail",
+        "Year Membership Opened",
+        "Name of Current Employer",
+        "Membership Qualification",
+        "Employer When Primary Savings Opened",
+        "CC Ownership & Limit",
+        "Auto Loan & Year/Make/Model",
+        "Previous Address",
+        "Date of Loan (not LOC)",
+        "Term of Car Loan",
+        "Employment Service Date",
+        "PODS/Beneficiaries on Specific Account",
+        "Employer's Address When Membership Opened",
+        "Home Address When Membership Opened",
+        "Job Title When Membership Opened",
+        "Date Business Account Opened",
+        "EIN of Business Account",
+        "Date of Incorporation for Business Account",
+        "Quiq Verification Code",
+      ];
+	  
+	  const fullVerificationInquiries = [
+		"Permission to Speak",
+		"Closing Account",
+		"Payrailz OTP",
+		"Ordering Debit/Credit Card",
+		"Ordering Checks",
+		"Add Travel/Merchant Exceptions",
+		"Add/Remove/Change Password",
+		"Address/Phone/Email Change",
+		"OMB Unlock/Temp Password",
+		"Providing/Confirming Numbers",
+		"Tele-talk Reset",
+		"Unblock Card/Clear Fraud",
+		"Reactivation of OLB Profile",
+	  ]
+
+      function onAuthChange(value) {
+		const notAuthFields = document.getElementById("form-not-auth"); // 2
+		const fullFields = document.getElementById("form-full-verification") // 3
+
+		notAuthFields.classList.add("inactive");
+		fullFields.classList.add("inactive");
+		if (value === "1") {
+			return
+		}
+		
+		// 2 = 2:1, 3:0
+		if (value === "2") {
+          notAuthFields.classList.remove("inactive");
+        }
+		// 3 = 2:1, 3:1
+		if (value === "3" || value === "") {
+          notAuthFields.classList.remove("inactive");
+		  fullFields.classList.remove("inactive");
+        }
+      }
+
+      const defaultItems = [
+        {
+          label: "Verification",
+          type: "select",
+          id: "form-auth-type",
+          options: [
+            "",
+            "Authenticated",
+            "Not Authenticated/Verified",
+            "No Display/Full Verification", 
+			...fullVerificationInquiries
+          ],
+          values: ["", "1", "2", "3"],
+          tip: "How the call shows or call type",
+          myEvent: ["change", onAuthChange],
+        },
+        {
+          label: "Notes",
+          type: "select",
+          options: ["", "Read"],
+          id: "form-notes-read",
+          tip: "Notes are found under the gray dropdown -> More -> All Notes",
+        },
+        {
+          label: "Changes",
+          type: "select",
+          options: ["", "No Changes", "Number Changed", "Email Changed"],
+          id: "form-account-changes",
+          tip: "Confirmed using the gray dropdown -> More -> Address Change Inquiry",
+        },
+        {
+          label: "Name",
+          type: "select",
+          options: ["", "Owner of Account", "Different Person"],
+          id: "form-name",
+          tip: "Verbally confirm the member's first and last name matches the account",
+        },
+        {
+          label: "Password",
+          type: "select",
+          options: ["", "Confirmed", "Incorrect", "N/A"],
+          id: "form-password",
+          tip: "See the top green box or At A Glance",
+        },
+        {
+          label: "Out of Wallet",
+          type: "select",
+          id: "out-of-wallet",
+          options: outOfWalletQuestions,
+          tip: "See the Member Services Verification Procedures document for more information",
+        },
+      ];
+
+      const notAuthItems = [
+	  {
+          label: "Number",
+          type: "select",
+          options: ["", "Member Number", "Account Number", "Full Social"],
+          id: "form-number",
+          tip: "Priortize asking for the Member Number or Account Number.",
+        },
+        {
+          label: "DOB",
+          type: "select",
+          options: ["", "Confirmed", "Not Confirmed"],
+          id: "form-dob",
+          tip: "See the top green box or At A Glance",
+        },
+        {
+          label: "Full Address",
+          type: "select",
+          options: ["", "Confirmed", "Not Confirmed"],
+          id: "form-address",
+          tip: "See the top green box or At A Glance",
+        },
+        {
+          label: "Social",
+          type: "select",
+          options: [
+            "",
+            "Confirmed Last 4",
+            "Already Confirmed",
+            "Not Confirmed",
+          ],
+          id: "form-social",
+          tip: "See At A Glance (Tax ID)",
+        },
+      ];
+
+      const additionalAuth = [
+        {
+          label: "2nd Out of Wallet",
+          type: "select",
+          options: outOfWalletQuestions,
+          id: "form-additional",
+          tip: "See the member services verification procedures document for more information",
+        },
+      ];
+
+      function createInput(inputObj) {
+        const container = document.createElement("div");
+        container.classList.add("input-container");
+
+        // create the input
+        const input =
+          inputObj.type === "select"
+            ? document.createElement("select")
+            : document.createElement("input");
+        input.setAttribute("id", inputObj.id);
+        input.setAttribute("required", "true");
+
+        if (inputObj.tip) {
+          input.setAttribute("title", inputObj.tip);
+        }
+
+        // add options
+        if (inputObj.type === "select") {
+          for (let i = 0; i < inputObj.options.length; i++) {
+            const option = document.createElement("option");
+			option.setAttribute("value", "") // default value
+            if (!inputObj.values) {
+			} else {
+				option.setAttribute("value", inputObj.values[i]);
+				if (option.value == "undefined") {
+					option.setAttribute("value", "");
+				}
+            }
+
+            option.text = inputObj.options[i];
+            input.appendChild(option);
+          }
+        } else {
+          input.setAttribute("type", inputObj.type);
+        }
+
+        if (inputObj.myEvent) {
+          input.addEventListener(inputObj.myEvent[0], () => {
+            inputObj.myEvent[1](input.value);
+          });
+        }
+
+        // create the label
+        const label = document.createElement("label");
+        label.innerText = inputObj.label + ": ";
+        label.setAttribute("for", inputObj.id);
+
+        container.appendChild(label);
+        container.appendChild(input);
+
+        return container;
+      }
+
+      function createForm(inputArray, form) {
+        for (let i = 0; i < inputArray.length; i++) {
+          form.appendChild(createInput(inputArray[i]));
+        }
+      }
+
+      createForm(defaultItems, form);
+
+      const formNotAuth = document.createElement("div");
+      formNotAuth.setAttribute("id", "form-not-auth");
+      form.appendChild(formNotAuth);
+      createForm(notAuthItems, formNotAuth);
+      formNotAuth.classList.add("flex-column");
+      formNotAuth.classList.add("flex-gap");
+
+      const formFullVerification = document.createElement("div");
+      formFullVerification.setAttribute("id", "form-full-verification");
+      formFullVerification.classList.add("flex-column");
+      formFullVerification.classList.add("flex-gap");
+      form.appendChild(formFullVerification);
+      createForm(additionalAuth, formFullVerification);
+
+      const notes = document.createElement("textarea");
+      notes.setAttribute("id", "form-notes");
+      notes.title = "For any notes during the call";
+      form.appendChild(notes);
+    </script>
+  </body>
+</html>
