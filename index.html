@@ -75,6 +75,7 @@
 
       #call-helper {
         min-height: 80%;
+        min-width: 585px;
         width: 80%;
         background-color: white;
         padding: 5px;
@@ -94,6 +95,7 @@
         flex: 1;
         resize: none;
         overflow: scroll;
+        padding: 5px;
       }
 
       .primary {
@@ -238,7 +240,7 @@
         </div>
       </div>
       <footer>
-        <p>version 0.241120</p>
+        <p>version 0.241124</p>
         <p>
           any feedback can be sent to
           <a href="mailto:kecarter@georgiasown.org">kecarter@georgiasown.org</a>
@@ -247,16 +249,12 @@
     </div>
 
     <script>
-      // form & reset
+      // form reset
       const form = document.getElementById("form-elm");
       const reset = document.getElementById("form-reset");
       reset.addEventListener("click", () => {
         const a = confirm("Are you sure you want to reset the form?");
         if (!a) return;
-
-        // reset form button colors
-        setCurrentTab("call-quality");
-
         form.reset();
       });
 
@@ -319,286 +317,763 @@
       const toolsArray = [
         {
           label: "Quiq Verification",
-          href: "https://georgiasown.goquiq.com/app/messaging/conversations",
+          href: "https://url.us.m.mimecastprotect.com/s/3q0nC5y1QoIMrkX6sOhxHkQBlC?domain=georgiasown.goquiq.com",
         },
         {
           label: "Client Central",
-          href: "https://www.client-central.com/nidp/app/login",
+          href: "https://www.client-central.com/",
         },
         {
           label: "Online Banking Admin",
-          href: "https://online-admin.georgiasown.org/Home",
+          href: "https://url.us.m.mimecastprotect.com/s/ZHwNC73W1qTzBG8ZSNsJHoeKv5?domain=online-admin.georgiasown.org",
         },
         {
           label: "DocuSign",
-          href: "https://account.docusign.com/",
+          href: "https://url.us.m.mimecastprotect.com/s/Zj2rC82B1riXyN2YSotyHyWpt6?domain=account.docusign.com",
+        },
+        {
+          label: "SWBC",
+          href: "https://portal.swbc.com/identity/Home/Login",
+        },
+        {
+          label: "Nautilus",
+          href: "https://records.georgiasown.org/",
         },
       ];
 
       const guidesArray = [
         {
           label: "DNA Navigation",
-          href: "https://thehub.georgiasown.org/WebDAV/Member%20Services/DNA%20General%20Navigation%20-Participant%20Guide.pdf",
+          href: "https://url.us.m.mimecastprotect.com/s/iRQAC9rL1vCzw4l2S1u6HqG5bK?domain=thehub.georgiasown.org",
         },
         {
           label: "Interaction Desktop",
-          href: "https://thehub.georgiasown.org/WebDAV/Member%20Services/Member%20Services%20Phone%20System%20Interaction%20Desktop%20Job%20Aid.pdf",
+          href: "https://url.us.m.mimecastprotect.com/s/HnIaC0RXYjSkAN7msLCmH9v4lE?domain=thehub.georgiasown.org",
         },
         {
           label: "Member Verification",
-          href: "https://thehub.georgiasown.org/WebDAV/Member%20Services/Member%20Services%20Verification%20Procedure%2010.03.24.pdf",
+          href: "https://url.us.m.mimecastprotect.com/s/3byRCgJQZWtqzEoGcKFgH4Lc00?domain=thehub.georgiasown.org",
         },
         {
           label: "Stop Payment Job Aid",
-          href: "https://thehub.georgiasown.org/WebDAV/Member%20Services/Member%20Services%20Call%20Types_Stop%20Payments%20Job%20Aid_Final%207.1.24.pdf",
+          href: "https://url.us.m.mimecastprotect.com/s/Q5ARCjROZWSYxoBRcMH7Hm11JW?domain=thehub.georgiasown.org",
         },
         {
           label: "Fraud Job Aid",
-          href: "https://thehub.georgiasown.org/WebDAV/Member%20Services/Member%20Services%20Call%20Types%20Fraud%20Job%20Aid%207.1.24.pdf",
+          href: "https://url.us.m.mimecastprotect.com/s/EuHFCkRO8WSkJ2K5sDI8HG8Le8?domain=thehub.georgiasown.org",
         },
         {
           label: "Credit Card Job Aid",
-          href: "https://thehub.georgiasown.org/WebDAV/Member%20Services/Member%20Services%20Call%20Types_Credit%20Card%20Inquiries_Final_4-18-23.pdf",
+          href: "https://url.us.m.mimecastprotect.com/s/X2n3ClYMxWi1YRVXsLSNHzGsvK?domain=thehub.georgiasown.org",
         },
         {
           label: "Loan Payment Job Aid",
-          href: "https://thehub.georgiasown.org/WebDAV/Member%20Services/Member%20Services%20Call%20Types%20Loan%20Payments%20Job%20Aid%20Final%201-11-24.pdf",
+          href: "https://url.us.m.mimecastprotect.com/s/cEuDCmZMOWipQygWTVTRHRT1DF?domain=thehub.georgiasown.org",
         },
       ];
 
       const linksArray = [
         {
           label: "The Hub",
-          href: "https://thehub.georgiasown.org/",
+          href: "https://url.us.m.mimecastprotect.com/s/76uUCn5NxWiXR9PmS4UWHJBRaU?domain=thehub.georgiasown.org",
         },
         {
           label: "Member Services Forms",
-          href: "https://thehub.georgiasown.org/workgroups/948c5b26-6812-4157-b978-d6b30d7f5304.aspx",
+          href: "https://url.us.m.mimecastprotect.com/s/eTEDCo26VWiDy2gvuJcOHpExiS?domain=thehub.georgiasown.org",
         },
         {
           label: "Documents & Forms",
-          href: "https://thehub.georgiasown.org/workgroups/67d18971-2ce9-4f31-a0bf-4a6ecf65c83f.aspx?LinkedFromPublic=true",
+          href: "https://url.us.m.mimecastprotect.com/s/iR3HCpYX8Wi9R4VAFqfEHGTvdq?domain=thehub.georgiasown.org",
         },
         {
           label: "Workday",
-          href: "https://georgiasown.workday.com/",
+          href: "https://url.us.m.mimecastprotect.com/s/XRjiCqxM7Wf1MYEXs7hxHEyduE?domain=georgiasown.workday.com",
         },
         {
           label: "Georgia's Own Website",
-          href: "https://georgiasown.org/",
+          href: "https://url.us.m.mimecastprotect.com/s/RgOMCrkM8WhrBQk2IYirH4Wb4B?domain=georgiasown.org",
         },
       ];
       tools.appendChild(returnLinkList(toolsArray));
       guides.appendChild(returnLinkList(guidesArray));
       links.appendChild(returnLinkList(linksArray));
 
-      // form
+      // qa lists
       const outOfWalletQuestions = [
-        "",
-        "E-Mail",
-        "Year Membership Opened",
-        "Name of Current Employer",
-        "Membership Qualification",
-        "Employer When Primary Savings Opened",
-        "CC Ownership & Limit",
-        "Auto Loan & Year/Make/Model",
-        "Previous Address",
-        "Date of Loan (not LOC)",
-        "Term of Car Loan",
-        "Employment Service Date",
-        "PODS/Beneficiaries on Specific Account",
-        "Employer's Address When Membership Opened",
-        "Home Address When Membership Opened",
-        "Job Title When Membership Opened",
-        "Date Business Account Opened",
-        "EIN of Business Account",
-        "Date of Incorporation for Business Account",
-        "Quiq Verification Code",
+        {
+          text: "",
+          value: "",
+        },
+        {
+          text: "E-Mail",
+          value: "e-mail",
+        },
+        {
+          text: "Year Membership Opened",
+          value: "year-membership-opened",
+        },
+        {
+          text: "Name of Current Employer",
+          value: "name-of-current-employer",
+        },
+        {
+          text: "Membership Qualification",
+          value: "membership-qualification",
+        },
+        {
+          text: "Employer When Primary Savings Opened",
+          value: "employer-when-primary-savings-opened",
+        },
+        {
+          text: "CC Ownership & Limit",
+          value: "cc-ownership-and-limit",
+        },
+        {
+          text: "Auto Loan & Year/Make/Model",
+          value: "auto-loan-and-year-make-model",
+        },
+        {
+          text: "Previous Address",
+          value: "previous-address",
+        },
+        {
+          text: "Date of Loan (not LOC)",
+          value: "date-of-loan",
+        },
+        {
+          text: "Term of Car Loan",
+          value: "term-of-car-loan",
+        },
+        {
+          text: "Employment Service Date",
+          value: "employment-service-date",
+        },
+        {
+          text: "PODS/Beneficiaries on Specific Account",
+          value: "pods-and-beneficiaries-on-specific-account",
+        },
+        {
+          text: "Employer's Address When Membership Opened",
+          value: "employers-address-when-membership-opened",
+        },
+        {
+          text: "Home Address When Membership Opened",
+          value: "home-address-when-membership-opened",
+        },
+        {
+          text: "Job Title When Membership Opened",
+          value: "job-title-when-membership-opened",
+        },
+        {
+          text: "Date Business Account Opened",
+          value: "date-business-account-opened",
+        },
+        {
+          text: "EIN of Business Account",
+          value: "ein-of-business-account",
+        },
+        {
+          text: "Date of Incorporation for Business Account",
+          value: "date-of-incorporation-for-business-account",
+        },
+        {
+          text: "Quiq Verification Code",
+          value: "quiq-verification-code",
+        },
       ];
 
-      function onAuthChange(value) {
-        if (value === "1") {
-          // Authenticated is selected, so hide the extra questions
-          document.getElementById("form-not-auth").classList.add("inactive");
-          document
-            .getElementById("form-full-verification")
-            .classList.add("inactive");
-          return;
-        } else if (value === "2") {
-          // Full verification is selected, so show everything
-          document
-            .getElementById("form-full-verification")
-            .classList.remove("inactive");
-        }
+      const fullVerificationInquiries = [
+        {
+          text: "",
+          value: "",
+        },
+        {
+          text: "Permission to Speak",
+          value: "2",
+        },
+        {
+          text: "Closing Account",
+          value: "2",
+        },
+        {
+          text: "Payrailz OTP",
+          value: "2",
+        },
+        {
+          text: "Ordering Debit/Credit Card",
+          value: "2",
+        },
+        {
+          text: "Ordering Checks",
+          value: "2",
+        },
+        {
+          text: "Add Travel/Merchant Exceptions",
+          value: "2",
+        },
+        {
+          text: "Add/Remove/Change Password",
+          value: "2",
+        },
+        {
+          text: "Address/Phone/Email Change",
+          value: "2",
+        },
+        {
+          text: "OMB Unlock/Temp Password",
+          value: "2",
+        },
+        {
+          text: "Providing/Confirming Numbers",
+          value: "2",
+        },
+        {
+          text: "Tele-talk Reset",
+          value: "2",
+        },
+        {
+          text: "Unblock Card/Clear Fraud",
+          value: "2",
+        },
+        {
+          text: "Reactivation of OLB Profile",
+          value: "2",
+        },
+        {
+          text: "Other",
+          value: "0",
+        },
+      ];
 
-        document.getElementById("form-not-auth").classList.remove("inactive");
+      // FORM SCRIPTS
+      function classChanger(elmSelector, className, add = true) {
+        const elms = document.querySelectorAll(elmSelector);
+        elms.forEach((elm) => {
+          elm.classList[add ? "add" : "remove"](className);
+        });
       }
 
-      const defaultItems = [
-        {
-          label: "Auth Type",
-          type: "select",
-          id: "form-auth-type",
-          options: [
-            "",
-            "Authenticated",
-            "Not Authenticated/Verified",
-            "No Display/Full Verification",
-          ],
-          values: ["", "1", "0", "2"],
-          tip: "How the call shows on Interaction Desktop -> SmartSuite",
-          myEvent: ["change", onAuthChange],
-        },
-        {
-          label: "Notes",
-          type: "select",
-          options: ["", "Not read", "Read"],
-          id: "form-notes-read",
-          tip: "Notes are found under the gray dropdown -> More -> All Notes",
-        },
-        {
-          label: "Changes",
-          type: "select",
-          options: ["", "No Changes", "Recent Changes"],
-          id: "form-account-changes",
-          tip: "Confirmed using the gray dropdown -> More -> Address Change Inquiry",
-        },
-        {
-          label: "Name",
-          type: "select",
-          options: ["", "Owner of Account", "Different Person"],
-          id: "form-name",
-          tip: "Verbally confirm the member's first and last name matches the account",
-        },
-        {
-          label: "Password",
-          type: "select",
-          options: ["", "Confirmed", "Incorrect", "N/A"],
-          id: "form-password",
-          tip: "See the top green box or At A Glance",
-        },
-        {
-          label: "Out of Wallet",
-          type: "select",
-          id: "out-of-wallet",
-          options: outOfWalletQuestions,
-          tip: "See the Member Services Verification Procedures document for more information",
-        },
-      ];
-
-      const notAuthItems = [
-        {
-          label: "DOB",
-          type: "select",
-          options: ["", "Confirmed", "Not Confirmed"],
-          id: "form-dob",
-          tip: "See the top green box or At A Glance",
-        },
-        {
-          label: "Full Address",
-          type: "select",
-          options: ["", "Confirmed", "Not Confirmed"],
-          id: "form-address",
-          tip: "See the top green box or At A Glance",
-        },
-        {
-          label: "Social",
-          type: "select",
-          options: [
-            "",
-            "Confirmed Last 4",
-            "Full Social Confirmed",
-            "Not Confirmed",
-          ],
-          id: "form-social",
-          tip: "See At A Glance (Tax ID)",
-        },
-      ];
-
-      const additionalAuth = [
-        {
-          label: "2nd Out of Wallet",
-          type: "select",
-          options: outOfWalletQuestions,
-          id: "form-additional",
-          tip: "See the member services verification procedures document for more information",
-        },
-      ];
-
-      function createInput(inputObj) {
-        const container = document.createElement("div");
-        container.classList.add("input-container");
-
-        // create the input
-        const input =
-          inputObj.type === "select"
-            ? document.createElement("select")
-            : document.createElement("input");
-        input.setAttribute("id", inputObj.id);
-        input.setAttribute("required", "true");
-
-        if (inputObj.tip) {
-          input.setAttribute("title", inputObj.tip);
-        }
-
-        // add options
-        if (inputObj.type === "select") {
-          for (let i = 0; i < inputObj.options.length; i++) {
-            const option = document.createElement("option");
-            if (!inputObj.values) {
-            } else {
-              option.setAttribute("value", inputObj.values[i]);
-            }
-
-            option.text = inputObj.options[i];
-            input.appendChild(option);
+      function handleVerificationSelect(e) {
+        let value = 0;
+        const authFields = document.querySelectorAll(".auth-selector");
+        authFields.forEach((authField) => {
+          if (authField.value > value) {
+            value = authField.value;
           }
+        });
+
+        if (value == "0") {
+          // hide "set 1" if "set 0" is selected
+          classChanger(".form-items-1", "display-none", true);
         } else {
-          input.setAttribute("type", inputObj.type);
+          // hide "set 2" if "set 1" is selected
+          classChanger(".form-items-1", "display-none", false);
         }
 
-        if (inputObj.myEvent) {
-          input.addEventListener(inputObj.myEvent[0], () => {
-            inputObj.myEvent[1](input.value);
+        if (value == "2") {
+          classChanger(".form-items-2", "display-none", false);
+        } else {
+          classChanger(".form-items-2", "display-none", true);
+        }
+      }
+
+      /* GENERATE FORM */
+      const formContent = [
+        {
+          label: true,
+          labelText: "Verification",
+          elm: "select",
+          myEvent: ["change", handleVerificationSelect],
+          attributes: [
+            {
+              type: "id",
+              value: "form-auth-type",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value: "How the call shows on Interaction Desktop -> SmartSuite",
+            },
+          ],
+          elmStyles: ["auth-selector"],
+          container: true,
+          containerStyles: ["input-container"],
+          options: [
+            {
+              text: "",
+              value: "",
+            },
+            {
+              text: "Authenticated",
+              value: "0",
+            },
+            {
+              text: "Not Authenticated/Verified",
+              value: "1",
+            },
+            {
+              text: "No Display/Full Verification",
+              value: "2",
+            },
+          ],
+        },
+        {
+          label: true,
+          labelText: "Call Type",
+          elm: "select",
+          myEvent: ["change", handleVerificationSelect],
+          attributes: [
+            {
+              type: "id",
+              value: "form-call-type",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value: "What type of call is this?",
+            },
+          ],
+          elmStyles: ["auth-selector"],
+          container: true,
+          containerStyles: ["input-container"],
+          options: [...fullVerificationInquiries],
+        },
+        {
+          label: true,
+          labelText: "Number",
+          elm: "select",
+          attributes: [
+            {
+              type: "id",
+              value: "form-account-number",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "data-verification",
+              value: "1",
+            },
+            {
+              type: "title",
+              value: "Member Number, Account Number or Social Security Number",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container", "display-none", "form-items-1"],
+          options: [
+            {
+              text: "",
+              value: "",
+            },
+            {
+              text: "Member Number",
+              value: "",
+            },
+            {
+              text: "Account Number",
+              value: "",
+            },
+            {
+              text: "Full Social Security Number",
+              value: "",
+            },
+          ],
+        },
+        {
+          label: true,
+          labelText: "Notes",
+          elm: "select",
+
+          attributes: [
+            {
+              type: "id",
+              value: "form-account-notes",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value:
+                "Read the account notes under the gray dropdown -> More -> All Notes",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container"],
+          options: [
+            {
+              text: "",
+              value: "",
+            },
+            {
+              text: "Read",
+              value: "read",
+            },
+            {
+              text: "Not Read",
+              value: "",
+            },
+          ],
+        },
+        {
+          label: true,
+          labelText: "Changes",
+          elm: "select",
+          attributes: [
+            {
+              type: "id",
+              value: "form-account-changes",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value:
+                "Confirm using the gray dropdown -> More -> Address Change Inquiry",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container"],
+          options: [
+            {
+              text: "",
+              value: "",
+            },
+            {
+              text: "No Changes",
+              value: "no-changes",
+            },
+            {
+              text: "Phone Number Changed",
+              value: "phone-changed",
+            },
+            {
+              text: "Email Changed",
+              value: "email-changed",
+            },
+          ],
+        },
+        {
+          label: true,
+          labelText: "Name",
+          elm: "select",
+          attributes: [
+            {
+              type: "id",
+              value: "form-name",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value: "See green box at the top or At A Glance",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container"],
+          options: [
+            {
+              text: "",
+              value: "",
+            },
+            {
+              text: "Owner of Account",
+              value: "owner-of-account",
+            },
+            {
+              text: "Someone Else",
+              value: "someone-else",
+            },
+          ],
+        },
+        {
+          label: true,
+          labelText: "Password",
+          elm: "select",
+          attributes: [
+            {
+              type: "id",
+              value: "form-password",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value: "See the top green box",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container"],
+          options: [
+            {
+              text: "",
+              value: "",
+            },
+            {
+              text: "Confirmed",
+              value: "confirmed",
+            },
+            {
+              text: "Incorrect",
+              value: "incorrect",
+            },
+            {
+              text: "N/A",
+              value: "n/a",
+            },
+          ],
+        },
+        {
+          label: true,
+          labelText: "DOB",
+          elm: "select",
+          attributes: [
+            {
+              type: "id",
+              value: "form-dob",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value: "See the top green box or At A Glance",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container", "display-none", "form-items-1"],
+          options: [
+            {
+              text: "",
+              value: "",
+            },
+            {
+              text: "Confirmed",
+              value: "confirmed",
+            },
+            {
+              text: "Not Confirmed",
+              value: "not-confirmed",
+            },
+          ],
+        },
+        {
+          label: true,
+          labelText: "Full Address",
+          elm: "select",
+          attributes: [
+            {
+              type: "id",
+              value: "form-address",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value: "See top green box or At A Glance",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container", "display-none", "form-items-1"],
+          options: [
+            {
+              text: "",
+              value: "",
+            },
+            {
+              text: "Confirmed Full Address",
+              value: "confirmed-full-address",
+            },
+            {
+              text: "Confirmed Partial Address",
+              value: "confirmed-partial-address",
+            },
+            {
+              text: "Not Confirmed",
+              value: "not-confirmed",
+            },
+          ],
+        },
+        {
+          label: true,
+          labelText: "Social",
+          elm: "select",
+          attributes: [
+            {
+              type: "id",
+              value: "",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value: "See top green box or At A Glance (tax ID)",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container", "display-none", "form-items-1"],
+          options: [
+            {
+              text: "",
+              value: "",
+            },
+            {
+              text: "Confirmed Last 4",
+              value: "confirmed-last-4",
+            },
+            {
+              text: "Confirmed Full Social",
+              value: "confirmed-full-social",
+            },
+            {
+              text: "Not Confirmed",
+              value: "not-confirmed",
+            },
+            {
+              text: "N/A",
+              value: "n/a",
+            },
+          ],
+        },
+        {
+          label: true,
+          labelText: "Out of Wallet",
+          elm: "select",
+          attributes: [
+            {
+              type: "id",
+              value: "form-out-of-wallet",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value:
+                "See the Member Services Verification Guide for more information",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container"],
+          options: [...outOfWalletQuestions],
+        },
+        {
+          label: true,
+          labelText: "2nd Out of Wallet",
+          elm: "select",
+          attributes: [
+            {
+              type: "id",
+              value: "form-second-out-of-wallet",
+            },
+            {
+              type: "required",
+              value: "true",
+            },
+            {
+              type: "title",
+              value:
+                "See Member Services Verification Guide for more information",
+            },
+          ],
+          elmStyles: [],
+          container: true,
+          containerStyles: ["input-container", "display-none", "form-items-2"],
+          options: [...outOfWalletQuestions],
+        },
+      ];
+
+      function createElm(obj) {
+        const elms = [];
+        const container = document.createElement("div");
+        const label = document.createElement("label");
+        const input = document.createElement(obj.elm);
+
+        if (obj.label === true) {
+          label.innerText = obj.labelText + ": ";
+          elms.push(label);
+        }
+
+        for (let i = 0; i < obj.attributes.length; i++) {
+          if (obj.attributes[i].type === "id" && obj.label === true) {
+            label.setAttribute("for", obj.attributes[i].value);
+          }
+
+          input.setAttribute(obj.attributes[i].type, obj.attributes[i].value);
+        }
+
+        if (obj.options) {
+          obj.options.forEach((option) => {
+            const optionElm = document.createElement("option");
+            optionElm.setAttribute("value", option.value);
+            optionElm.innerText = option.text;
+            input.appendChild(optionElm);
           });
         }
 
-        // create the label
-        const label = document.createElement("label");
-        label.innerText = inputObj.label + ": ";
-        label.setAttribute("for", inputObj.id);
+        input.classList.add(...obj.elmStyles);
 
-        container.appendChild(label);
-        container.appendChild(input);
+        if (obj.myEvent) {
+          input.addEventListener(obj.myEvent[0], (e) => {
+            obj.myEvent[1](e.target.value);
+          });
+        }
 
-        return container;
+        elms.push(input);
+
+        if (obj.container === true) {
+          container.classList.add(...obj.containerStyles);
+
+          for (let j = 0; j < elms.length; j++) {
+            container.appendChild(elms[j]);
+          }
+
+          return container;
+        }
+
+        return elms;
       }
 
-      function createForm(inputArray, form) {
-        for (let i = 0; i < inputArray.length; i++) {
-          form.appendChild(createInput(inputArray[i]));
+      function createForm(array, container) {
+        for (let i = 0; i < array.length; i++) {
+          container.appendChild(createElm(array[i]));
         }
       }
-
-      createForm(defaultItems, form);
-
-      const formNotAuth = document.createElement("div");
-      formNotAuth.setAttribute("id", "form-not-auth");
-      form.appendChild(formNotAuth);
-      createForm(notAuthItems, formNotAuth);
-      formNotAuth.classList.add("flex-column");
-      formNotAuth.classList.add("flex-gap");
-
-      const formFullVerification = document.createElement("div");
-      formFullVerification.setAttribute("id", "form-full-verification");
-      formFullVerification.classList.add("flex-column");
-      formFullVerification.classList.add("flex-gap");
-      form.appendChild(formFullVerification);
-      createForm(additionalAuth, formFullVerification);
 
       const notes = document.createElement("textarea");
       notes.setAttribute("id", "form-notes");
       notes.title = "For any notes during the call";
+      createForm(formContent, form);
       form.appendChild(notes);
     </script>
   </body>
