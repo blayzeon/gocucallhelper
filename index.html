@@ -81,6 +81,10 @@
         background-color: white;
         padding: 5px;
       }
+	  
+	  #call-banner > button:hover {
+		background-color: var(--primary-bgc) !important;
+	  }
 
       #call-tabs {
         border: 1px solid rgb(157, 157, 157);
@@ -193,6 +197,10 @@
       .link-list li:hover {
         background-color: var(--secondary-bgc);
       }
+	  
+	  .warning {
+		background-color: red !important;
+	  }
 
       input:invalid,
       select:invalid {
@@ -210,7 +218,8 @@
     <div id="container" class="flex-center flex-column primary">
       <div id="call-helper" class="flex-column round-border">
         <div id="call-banner" class="margin padded round-border secondary">
-          <h1>Call Helper</h1>
+          <h1 id="timer">Call Helper</h1>
+		  <button id="timer-btn">Start</button>
         </div>
         <div id="call-tabs">
           <button data-tab-button="call-quality" class="selected">
@@ -241,7 +250,7 @@
         </div>
       </div>
       <footer>
-        <p>version 0.241127</p>
+        <p>version 0.2411271</p>
         <p>
           any feedback can be sent to
           <a href="mailto:kecarter@georgiasown.org">kecarter@georgiasown.org</a>
@@ -250,6 +259,89 @@
     </div>
 
     <script>
+		// time
+		const timerBtn = document.getElementById("timer-btn");
+		const timerDisplay = document.getElementById("timer");
+		const timerBanner = document.getElementById("call-banner");
+		let state = 0
+		timerBtn.addEventListener('click', ()=> {
+			if (state === 0) {
+				// timer is currently off, turn it on
+				startTimer()
+				timerBtn.innerText = "Stop";
+				state = 1;
+			} else {
+				// timer is currently on, turn it off
+				let a = confirm("Reset timer?");
+				if (!a) return;
+				stopTimer()
+				resetTimer()
+				timerBtn.innerText = "Start";
+				state = 0;
+			}
+		})
+		const accurateTimer = (fn, time = 1000) => {
+		// nextAt is the value for the next time the timer should fire.
+		// timeout holds the timeoutID so the timer can be stopped.
+		let nextAt, timeout;
+		// initilzes nextAt as now + the time in milliseconds you pass to accurateTimer.
+		nextAt = new Date().getTime() + time;
+  
+		// This function schedules the next function call.
+		const wrapper = () => {
+			// next function call is always calculated from when the timer started
+			nextAt += time;
+			// there is where the next setTimeout is adjusted to keep the time accurate.
+			timeout = setTimeout(wrapper, nextAt - new Date().getTime());
+			// the function passed to accurateTimer is called.
+			fn();
+		};
+  
+		// this function stops the timer.
+		const cancel = () => clearTimeout(timeout);
+  
+		// the first function call is scheduled.
+		timeout = setTimeout(wrapper, nextAt - new Date().getTime());
+  
+		// the cancel function is returned so it can be called outside accurateTimer.
+		return { cancel };
+		};
+
+
+		let timer, on = false, elapsedSeconds = 0;
+
+		const startTimer = () => {
+			if(on) return;
+			timer = accurateTimer(() => {
+			elapsedSeconds++;
+			on = true;
+			let minutes = Math.floor(elapsedSeconds / 60),
+			seconds = elapsedSeconds % 60;
+			seconds = seconds > 9 ? seconds : `0${seconds}`
+			document.getElementById('timer').innerHTML = `${minutes}:${seconds}`;
+			
+			if (minutes >= 2) {
+				timerBanner.classList.add("warning");
+			}
+		});
+		};
+
+		const stopTimer = () => {
+			if (on) 
+			on = false;
+			timer.cancel();
+		};
+
+		const resetTimer = () => {
+			if (!on) {
+			if (elapsedSeconds !== 0) 
+			elapsedSeconds = 0;
+			document.getElementById('timer').innerHTML = 'Call Helper';
+			timerBanner.classList.remove("warning")
+		};
+	};
+		
+		/* */
       // form reset
       const form = document.getElementById("form-elm");
       const reset = document.getElementById("form-reset");
