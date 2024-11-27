@@ -241,7 +241,7 @@
         </div>
       </div>
       <footer>
-        <p>version 0.2411261</p>
+        <p>version 0.241127</p>
         <p>
           any feedback can be sent to
           <a href="mailto:kecarter@georgiasown.org">kecarter@georgiasown.org</a>
@@ -410,10 +410,6 @@
       // qa lists
       const outOfWalletQuestions = [
         {
-          text: "",
-          value: "",
-        },
-        {
           text: "E-Mail",
           value: "e-mail",
         },
@@ -486,8 +482,9 @@
           value: "date-of-incorporation-for-business-account",
         },
         {
-          text: "Quiq Verification Code",
+          text: "Quiq Verification due to incorrect OOW",
           value: "quiq-verification-code",
+		  styles: ["form-items-0", "display-none"]
         },
       ];
 
@@ -560,7 +557,19 @@
         elms.forEach((elm) => {
           elm.classList[add ? "add" : "remove"](className);
         });
+		
+		return elms
       }
+	  
+	  function showValueAsId(e) {
+		if (e == "") {
+			handleVerificationSelect("0");
+			return
+		} 
+		
+		const elm = document.querySelector(`.${e}`);
+		elm.classList.remove("display-none");
+	  }
 
       function handleVerificationSelect(e) {
         let value = 0;
@@ -571,19 +580,13 @@
           }
         });
 
-        if (value == "0") {
-          // hide "set 1" if "set 0" is selected
+		// hide everything
+		classChanger(".form-items-0", "display-none", true);
           classChanger(".form-items-1", "display-none", true);
-        } else {
-          // hide "set 2" if "set 1" is selected
-          classChanger(".form-items-1", "display-none", false);
-        }
-
-        if (value == "2") {
-          classChanger(".form-items-2", "display-none", false);
-        } else {
-          classChanger(".form-items-2", "display-none", true);
-        }
+		  classChanger(".form-items-2", "display-none", true);
+		  
+        // show relevant
+		classChanger(`.form-items-${value}`, "display-none", false);
       }
 
       /* GENERATE FORM */
@@ -677,7 +680,7 @@
           ],
           elmStyles: [],
           container: true,
-          containerStyles: ["input-container", "display-none", "form-items-1"],
+          containerStyles: ["input-container", "display-none", "form-items-1", "form-items-2"],
           options: [
             {
               text: "",
@@ -737,6 +740,7 @@
           label: true,
           labelText: "Password",
           elm: "select",
+		  myEvent: ["change", showValueAsId],
           attributes: [
             {
               type: "id",
@@ -761,16 +765,22 @@
             },
             {
               text: "Confirmed",
-              value: "confirmed",
+              value: "",
             },
             {
               text: "Incorrect",
-              value: "incorrect",
+              value: "",
             },
             {
               text: "N/A",
-              value: "n/a",
+              value: "",
+			  styles: ["form-items-0", "form-items-2", "display-none"]
             },
+			{
+				text: "N/A - Send Quiq Code if eligible",
+				value: "form-second-out-of-wallet",
+				styles: ["form-items-1", "display-none"],
+			}
           ],
         },
         
@@ -873,7 +883,7 @@
           ],
           elmStyles: [],
           container: true,
-          containerStyles: ["input-container", "display-none", "form-items-1"],
+          containerStyles: ["input-container", "display-none", "form-items-1", "form-items-2"],
           options: [
             {
               text: "",
@@ -891,7 +901,7 @@
         },
         {
           label: true,
-          labelText: "Full Address",
+          labelText: "Address",
           elm: "select",
           attributes: [
             {
@@ -909,7 +919,7 @@
           ],
           elmStyles: [],
           container: true,
-          containerStyles: ["input-container", "display-none", "form-items-1"],
+          containerStyles: ["input-container", "display-none", "form-items-1", "form-items-2"],
           options: [
             {
               text: "",
@@ -918,10 +928,6 @@
             {
               text: "Confirmed Full Address",
               value: "confirmed-full-address",
-            },
-            {
-              text: "Confirmed Partial Address",
-              value: "confirmed-partial-address",
             },
             {
               text: "Not Confirmed",
@@ -949,14 +955,14 @@
           ],
           elmStyles: [],
           container: true,
-          containerStyles: ["input-container", "display-none", "form-items-1"],
+          containerStyles: ["input-container", "display-none", "form-items-1", "form-items-2"],
           options: [
             {
               text: "",
               value: "",
             },
             {
-              text: "Confirmed Last 4",
+              text: "Confirmed Last 4 (for verification)",
               value: "confirmed-last-4",
             },
             {
@@ -995,7 +1001,12 @@
           elmStyles: [],
           container: true,
           containerStyles: ["input-container"],
-          options: [...outOfWalletQuestions],
+          options: [
+			{
+				text: "",
+				value: "",
+			},
+			...outOfWalletQuestions],
         },
         {
           label: true,
@@ -1018,8 +1029,24 @@
           ],
           elmStyles: [],
           container: true,
-          containerStyles: ["input-container", "display-none", "form-items-2"],
-          options: [...outOfWalletQuestions],
+          containerStyles: ["input-container", "form-second-out-of-wallet", "display-none", "form-items-2"],
+          options: [
+			{
+				text: "",
+				value: "",
+			},
+			{
+				text: "Quiq Verification due to no Password",
+				value: "quiq-verification-code",
+				styles: ["form-items-1", "display-none"]
+			},
+			...outOfWalletQuestions,
+			{
+				text: "Quiq Verification due to incorrect OOW",
+				value: "quiq-verification-code",
+				styles: ["form-items-2", "display-none"]
+			},
+		  ],
         },
       ];
 
@@ -1047,6 +1074,11 @@
             const optionElm = document.createElement("option");
             optionElm.setAttribute("value", option.value);
             optionElm.innerText = option.text;
+			
+			if (option.styles) {
+				optionElm.classList.add(...option.styles);
+			}
+			
             input.appendChild(optionElm);
           });
         }
